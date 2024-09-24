@@ -8,8 +8,8 @@ spring:
       path: /h2-console
 
   datasource:
-    url: jdbc:h2:mem:qna;NON_KEYWORDS=USER
-    username: sa
-    password:
+    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
+    username: host
+    password: 1234
     driver-class-name: org.h2.Driver
 
