@@ -1,15 +1,16 @@
 package gdsc.practice.user.domain;
 
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "users")
 public class User {
 
     @Id
@@ -17,17 +18,18 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    private String email;
+    private String username;
 
     private String password;
 
     @Column(unique = true)
-    private String username;
+    private String email;
 
     @Builder
-    public User(String email, String password, String username) {
-        this.email = email;
-        this.password = password;
+    public User(Long id, String username, String password, String email) {
+        this.id = id;
         this.username = username;
+        this.password = password;
+        this.email = email;
     }
 }
