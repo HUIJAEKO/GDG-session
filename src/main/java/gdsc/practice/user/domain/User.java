@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(unique = true)
     private String username;
@@ -26,7 +26,7 @@ public class User {
     private String email;
 
     @Builder
-    public User(String id, String username, String password, String email) {
+    public User(Long id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;

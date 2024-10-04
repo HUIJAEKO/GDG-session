@@ -10,7 +10,7 @@ public class UserNotFound extends UserException {
     }
 
     @Override
-    public HttpStatus getStatus() {
+    public HttpStatus getStatusCode() {
         return HttpStatus.BAD_REQUEST;
     }
 }

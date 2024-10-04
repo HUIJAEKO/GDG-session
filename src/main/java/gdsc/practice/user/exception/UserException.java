@@ -9,5 +9,5 @@ public abstract class UserException extends RuntimeException {
         super(message);
     }
 
-    public abstract HttpStatus getStatus();
+    public abstract HttpStatus getStatusCode();
 }
