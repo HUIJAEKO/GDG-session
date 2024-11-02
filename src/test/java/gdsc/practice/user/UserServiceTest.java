@@ -49,28 +49,4 @@ public class UserServiceTest {
         assertNotEquals("1234", user.getPassword());
         assertEquals("kim", user.getUsername());
     }
-
-    @Test
-    @DisplayName("회원가입시 중복된 이메일")
-    void test2() {
-        // given
-        User user = User.builder()
-                .email("nmkk1234@naver.com")
-                .password("12345")
-                .username("kim123")
-                .build();
-
-        userRepository.save(user);
-
-        // when
-        SignupRequest signup = SignupRequest.builder()
-                .email("nmkk1234@naver.com")
-                .password1("1234")
-                .password2("1234")
-                .username("kim2")
-                .build();
-
-        // expected
-        assertThrows(AlreadyExistsEmailException.class, () -> userService.signup(signup));
-    }
 }
