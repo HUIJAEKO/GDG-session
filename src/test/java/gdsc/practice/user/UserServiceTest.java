@@ -2,7 +2,6 @@ package gdsc.practice.user;
 
 import gdsc.practice.user.domain.User;
 import gdsc.practice.user.dto.SignupRequest;
-import gdsc.practice.user.exception.AlreadyExistsEmailException;
 import gdsc.practice.user.repository.UserRepository;
 import gdsc.practice.user.service.UserService;
 import org.junit.jupiter.api.AfterEach;
