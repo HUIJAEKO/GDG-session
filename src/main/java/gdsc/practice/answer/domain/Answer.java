@@ -33,4 +33,8 @@ public class Answer {
         this.author = author;
         this.question = question;
     }
+
+    public void update(String content){
+        this.content = content;
+    }
 }
