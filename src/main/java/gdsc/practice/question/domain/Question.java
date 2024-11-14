@@ -1,6 +1,7 @@
 package gdsc.practice.question.domain;
 
 import gdsc.practice.answer.domain.Answer;
+import gdsc.practice.global.BaseEntity;
 import gdsc.practice.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @Table(name = "questions")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Question {
+public class Question extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +29,15 @@ public class Question {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    private User anthor;
+    private User author;
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
 
-    public Question(String subject, String content, User anthor) {
+    public Question(String subject, String content, User author) {
         this.subject = subject;
         this.content = content;
-        this.anthor = anthor;
+        this.author = author;
     }
 
     public void update(

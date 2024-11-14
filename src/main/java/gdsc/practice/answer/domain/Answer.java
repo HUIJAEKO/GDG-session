@@ -1,5 +1,6 @@
 package gdsc.practice.answer.domain;
 
+import gdsc.practice.global.BaseEntity;
 import gdsc.practice.question.domain.Question;
 import gdsc.practice.user.domain.User;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "answers")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Answer {
+public class Answer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

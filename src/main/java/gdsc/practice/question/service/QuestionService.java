@@ -1,13 +1,20 @@
 package gdsc.practice.question.service;
 
+import gdsc.practice.answer.domain.Answer;
+import gdsc.practice.answer.dto.AnswerResponse;
+import gdsc.practice.answer.exception.BusinessException;
+import gdsc.practice.answer.exception.ErrorCode;
 import gdsc.practice.question.domain.Question;
 import gdsc.practice.question.dto.QuestionRequest;
+import gdsc.practice.question.dto.QuestionResponse;
 import gdsc.practice.question.repository.QuestionRepository;
 import gdsc.practice.user.domain.User;
 import gdsc.practice.user.dto.UserInfo;
 import gdsc.practice.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +27,7 @@ public class QuestionService {
     // 2. 질문 저장
     public Long saveQuestion(UserInfo userInfo, QuestionRequest questionRequest){
         User author = userRepository.findById(userInfo.getId())
-                .orElseThrow(() -> new RuntimeException("존재하지 않은 회원입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_EXCEPTION));
         Question question = new Question(questionRequest.subject(), questionRequest.content(), author);
         Question savedQuestion = questionRepository.save(question);
         return savedQuestion.getId();
@@ -33,9 +40,9 @@ public class QuestionService {
             Long questionId
     ){
         User author = userRepository.findById(userInfo.getId())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_EXCEPTION));
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 질문입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXIST_QUESTION_EXCEPTION));
         question.update(questionRequest.subject(), questionRequest.content());
         questionRepository.save(question);
         return question.getId();
@@ -48,13 +55,30 @@ public class QuestionService {
             Long questionId
     ) {
         User author = userRepository.findById(userInfo.getId())
-                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_EXCEPTION));
         return questionRepository.findById(questionId)
                 .map(question ->{
                     questionRepository.delete(question);
                     return question.getId();
                 })
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 질문입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXIST_QUESTION_EXCEPTION));
+    }
+
+    public QuestionResponse getQuestion(Long questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_EXIST_QUESTION_EXCEPTION));
+
+        List<Answer> answers = question.getAnswers();
+        List<AnswerResponse> answerResponses = AnswerResponse.toResponses(answers);
+
+        return QuestionResponse.builder()
+                .subject(question.getSubject())
+                .content(question.getContent())
+                .authorId(question.getAuthor().getId())
+                .author(question.getAuthor().getUsername())
+                .answers(answerResponses)
+                .modifiedDate(question.getModifiedDate())
+                .build();
     }
 
 }

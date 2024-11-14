@@ -24,7 +24,7 @@ public class AnswerController {
     }
 
     @PatchMapping("/{answerId}")
-    public ResponseEntity<Long> updateAnswer(
+    public ResponseEntity<Long> modifyAnswer(
             @PathVariable Long answerId,
             @Login UserInfo userInfo,
             @RequestBody AnswerRequest answerRequest
