@@ -2,9 +2,14 @@ package gdsc.practice.question.controller;
 
 import gdsc.practice.config.argumentresolver.Login;
 import gdsc.practice.question.dto.QuestionRequest;
+import gdsc.practice.question.dto.QuestionResponse;
+import gdsc.practice.question.dto.SearchDto;
 import gdsc.practice.question.service.QuestionService;
 import gdsc.practice.user.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +48,14 @@ public class QuestionController {
     ) {
         Long deletedQuestionId = questionService.deleteQuestion(userInfo, questionId);
         return ResponseEntity.ok(deletedQuestionId);
+    }
+
+    @GetMapping
+    public ResponseEntity<Slice<QuestionResponse>> getQuestionPage(
+            @PageableDefault final Pageable pageable,
+            @RequestParam SearchDto searchDto
+    ) {
+        Slice<QuestionResponse> questionPage = questionService.getQuestionPage(pageable, searchDto);
+        return ResponseEntity.ok(questionPage);
     }
 }

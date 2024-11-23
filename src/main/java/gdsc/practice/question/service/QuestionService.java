@@ -7,20 +7,27 @@ import gdsc.practice.answer.exception.ErrorCode;
 import gdsc.practice.question.domain.Question;
 import gdsc.practice.question.dto.QuestionRequest;
 import gdsc.practice.question.dto.QuestionResponse;
+import gdsc.practice.question.dto.SearchDto;
+import gdsc.practice.question.repository.QuestionQueryRepository;
 import gdsc.practice.question.repository.QuestionRepository;
 import gdsc.practice.user.domain.User;
 import gdsc.practice.user.dto.UserInfo;
 import gdsc.practice.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
+    private final QuestionQueryRepository queryRepository;
 
     // TODO : 페이징
 
@@ -81,4 +88,12 @@ public class QuestionService {
                 .build();
     }
 
+    @Transactional
+    public Slice<QuestionResponse> getQuestionPage(Pageable pageable, SearchDto searchDto){
+        if(Objects.isNull(searchDto.subject())){
+            return queryRepository.getQuestionResponses(pageable);
+        }else{
+            return queryRepository.getQuestionResponses(pageable, searchDto);
+        }
+    }
 }
