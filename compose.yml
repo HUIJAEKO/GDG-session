@@ -1,0 +1,9 @@
+services:
+  spring:
+    image: gdg-back/practice:latest
+    ports:
+      - 8081:8080
+  react:
+    image: yundol/session:web
+    ports:
+      - 3000:3000

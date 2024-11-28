@@ -10,10 +10,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
+
+import static org.apache.logging.log4j.util.StringBuilders.equalsIgnoreCase;
 
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
@@ -22,7 +25,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-
+        if(HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())){
+            return true;
+        }
         HttpSession serverSession = request.getSession(false);
 
         // 서버에 세션이 없으면 세션이 만료된 상태로 간주 -> 에러 반환
